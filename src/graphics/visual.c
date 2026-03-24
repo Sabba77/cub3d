@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 16:00:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/20 13:38:46 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 13:25:02 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	start_visual_test(t_cub *cub)
 	mlx_loop_hook(mlx.mlx_ptr, render_loop, &mlx);
 	mlx_hook(mlx.win_ptr, 2, 1L << 0, handle_key, &mlx);
 	mlx_hook(mlx.win_ptr, 3, 1L << 1, handle_key_release, &mlx);
+	mlx_hook(mlx.win_ptr, 10, 1L << 21, handle_focus_out, &mlx);
 	mlx_hook(mlx.win_ptr, 17, 0, close_window, &mlx);
 	mlx_expose_hook(mlx.win_ptr, expose_frame, &mlx);
 	mlx_loop(mlx.mlx_ptr);

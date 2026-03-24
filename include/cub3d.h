@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/20 13:42:24 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 13:25:02 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_img
 	int		bpp;
 	int		line_len;
 	int		endian;
-}t_img;
+}	t_img;
 
 typedef struct s_tex
 {
@@ -49,7 +49,7 @@ typedef struct s_tex
 	int		endian;
 	int		width;
 	int		height;
-}t_tex;
+}	t_tex;
 
 typedef struct s_player
 {
@@ -59,7 +59,7 @@ typedef struct s_player
 	double	dir_y;
 	double	plane_x;
 	double	plane_y;
-}t_player;
+}	t_player;
 
 typedef struct s_ray
 {
@@ -79,19 +79,36 @@ typedef struct s_ray
 	int		side;
 	int		draw_start;
 	int		draw_end;
-}t_ray;
+}	t_ray;
+
+typedef struct s_cub
+{
+	char	*tex_no;
+	char	*tex_so;
+	char	*tex_we;
+	char	*tex_ea;
+	int		floor_color;
+	int		ceiling_color;
+	int		has_floor;
+	int		has_ceiling;
+	char	**map;
+	int		map_height;
+	int		player_x;
+	int		player_y;
+	char	player_dir;
+}	t_cub;
 
 typedef struct s_mlx
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	struct s_cub	*cub;
-	t_player		player;
-	t_img			frame;
-	t_tex			tex_no;
-	t_tex			tex_so;
-	t_tex			tex_we;
-	t_tex			tex_ea;
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_cub		*cub;
+	t_player	player;
+	t_img		frame;
+	t_tex		tex_no;
+	t_tex		tex_so;
+	t_tex		tex_we;
+	t_tex		tex_ea;
 	int			key_w;
 	int			key_a;
 	int			key_s;
@@ -100,30 +117,13 @@ typedef struct s_mlx
 	int			key_right;
 	int			win_width;
 	int			win_height;
-}t_mlx;
+}	t_mlx;
 
 typedef struct s_map_state
 {
 	int	started;
 	int	ended;
-}t_map_state;
-
-typedef struct s_cub
-{
-	char	*tex_no;
-	char	*tex_so;
-	char	*tex_we;
-	char	*tex_ea;
-	int	floor_color;
-	int	ceiling_color;
-	int	has_floor;
-	int	has_ceiling;
-	char	**map;
-	int	map_height;
-	int	player_x;
-	int	player_y;
-	char	player_dir;
-}t_cub;
+}	t_map_state;
 
 int		parse_cub_file(char *path, t_cub *cub);
 int		process_file_line(char *line, t_cub *cub, t_map_state *state,
@@ -140,8 +140,13 @@ int		render_scene(t_mlx *mlx);
 int		close_window(t_mlx *mlx);
 int		handle_key(int keycode, t_mlx *mlx);
 int		handle_key_release(int keycode, t_mlx *mlx);
+int		handle_focus_out(t_mlx *mlx);
 int		handle_player_input(int keycode, t_mlx *mlx);
 int		handle_player_release(int keycode, t_mlx *mlx);
+void	update_player_movement(t_mlx *mlx);
+void	draw_ray(t_mlx *mlx, t_ray *ray, int x);
+long	get_time_ms(void);
+int		should_render_frame(void);
 int		expose_frame(t_mlx *mlx);
 int		render_loop(t_mlx *mlx);
 void	put_pixel(t_img *img, int x, int y, int color);

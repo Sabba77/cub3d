@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 16:00:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/20 13:38:46 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 13:22:30 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ int	expose_frame(t_mlx *mlx)
 
 int	render_loop(t_mlx *mlx)
 {
-	handle_player_input(0, mlx);
+	if (!should_render_frame())
+		return (0);
+	update_player_movement(mlx);
 	if (render_scene(mlx))
 		return (close_window(mlx));
-	usleep(16000);
 	return (0);
 }

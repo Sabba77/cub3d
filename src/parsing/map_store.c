@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 12:55:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/20 12:54:19 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 12:24:20 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	add_map_line(t_cub *cub, char *line, char **error)
 {
 	char	**new_map;
 	char	*new_line;
-	int	index;
+	int		index;
 
 	new_line = ft_strdup(line);
 	if (new_line == NULL)

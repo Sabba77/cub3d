@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   focus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/21 12:24:20 by sabba            ###   ########.fr       */
+/*   Created: 2026/03/21 13:40:00 by sabba             #+#    #+#             */
+/*   Updated: 2026/03/21 13:25:02 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	main(int argc, char **argv)
+int	handle_focus_out(t_mlx *mlx)
 {
-	t_cub	cub;
-	int		parse_status;
-	int		visual_status;
-
-	if (argc != 2)
-		return (print_error("Usage: ./cub3D <map.cub>"));
-	init_cub(&cub);
-	parse_status = parse_cub_file(argv[1], &cub);
-	if (parse_status != 0)
-	{
-		free_cub(&cub);
-		return (1);
-	}
-	visual_status = start_visual_test(&cub);
-	free_cub(&cub);
-	if (visual_status != 0)
-		return (1);
+	mlx->key_w = 0;
+	mlx->key_a = 0;
+	mlx->key_s = 0;
+	mlx->key_d = 0;
+	mlx->key_left = 0;
+	mlx->key_right = 0;
 	return (0);
 }

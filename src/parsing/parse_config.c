@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/20 12:41:35 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 12:24:20 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,29 @@ static int	parse_texture_line(char *line, t_cub *cub, char **error)
 	return (2);
 }
 
+static int	parse_color_line(char *line, t_cub *cub, char **error)
+{
+	if (ft_strncmp(line, "F ", 2) == 0)
+	{
+		if (cub->has_floor)
+			return (set_error(error, "Duplicated floor color"));
+		if (parse_color_value(line + 1, &cub->floor_color))
+			return (set_error(error, "Invalid floor color"));
+		cub->has_floor = 1;
+		return (0);
+	}
+	if (ft_strncmp(line, "C ", 2) == 0)
+	{
+		if (cub->has_ceiling)
+			return (set_error(error, "Duplicated ceiling color"));
+		if (parse_color_value(line + 1, &cub->ceiling_color))
+			return (set_error(error, "Invalid ceiling color"));
+		cub->has_ceiling = 1;
+		return (0);
+	}
+	return (2);
+}
+
 int	parse_config_line(char *line, t_cub *cub, char **error)
 {
 	int	index;
@@ -71,23 +94,5 @@ int	parse_config_line(char *line, t_cub *cub, char **error)
 	status = parse_texture_line(line + index, cub, error);
 	if (status != 2)
 		return (status);
-	if (ft_strncmp(line + index, "F ", 2) == 0)
-	{
-		if (cub->has_floor)
-			return (set_error(error, "Duplicated floor color"));
-		if (parse_color_value(line + index + 1, &cub->floor_color))
-			return (set_error(error, "Invalid floor color"));
-		cub->has_floor = 1;
-		return (0);
-	}
-	if (ft_strncmp(line + index, "C ", 2) == 0)
-	{
-		if (cub->has_ceiling)
-			return (set_error(error, "Duplicated ceiling color"));
-		if (parse_color_value(line + index + 1, &cub->ceiling_color))
-			return (set_error(error, "Invalid ceiling color"));
-		cub->has_ceiling = 1;
-		return (0);
-	}
-	return (2);
+	return (parse_color_line(line + index, cub, error));
 }

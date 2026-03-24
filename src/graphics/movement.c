@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:10:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/20 13:38:46 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/21 13:37:43 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,24 @@
 
 static int	is_walkable(t_mlx *mlx, double x, double y)
 {
-	int		map_x;
-	int		map_y;
+	double	radius;
 	char	cell;
 
-	map_x = (int)floor(x);
-	map_y = (int)floor(y);
-	cell = map_get_cell(mlx->cub, map_y, map_x);
+	radius = 0.24;
+	cell = map_get_cell(mlx->cub,
+			(int)floor(y - radius), (int)floor(x - radius));
+	if (cell == '1' || cell == ' ')
+		return (0);
+	cell = map_get_cell(mlx->cub,
+			(int)floor(y - radius), (int)floor(x + radius));
+	if (cell == '1' || cell == ' ')
+		return (0);
+	cell = map_get_cell(mlx->cub,
+			(int)floor(y + radius), (int)floor(x - radius));
+	if (cell == '1' || cell == ' ')
+		return (0);
+	cell = map_get_cell(mlx->cub,
+			(int)floor(y + radius), (int)floor(x + radius));
 	if (cell == '1' || cell == ' ')
 		return (0);
 	return (1);
@@ -75,23 +86,7 @@ static void	rotate_player(t_mlx *mlx, double angle)
 	mlx->player.plane_y = old_plane_x * sin_a + mlx->player.plane_y * cos_a;
 }
 
-static void	set_key_state(int keycode, t_mlx *mlx, int state)
-{
-	if (keycode == KEY_W)
-		mlx->key_w = state;
-	else if (keycode == KEY_S)
-		mlx->key_s = state;
-	else if (keycode == KEY_A)
-		mlx->key_a = state;
-	else if (keycode == KEY_D)
-		mlx->key_d = state;
-	else if (keycode == KEY_LEFT)
-		mlx->key_left = state;
-	else if (keycode == KEY_RIGHT)
-		mlx->key_right = state;
-}
-
-static void	apply_key_movement(t_mlx *mlx)
+void	update_player_movement(t_mlx *mlx)
 {
 	if (mlx->key_w)
 		move_forward(mlx, MOVE_SPEED);
@@ -105,18 +100,4 @@ static void	apply_key_movement(t_mlx *mlx)
 		rotate_player(mlx, -ROT_SPEED);
 	if (mlx->key_right)
 		rotate_player(mlx, ROT_SPEED);
-}
-
-int	handle_player_input(int keycode, t_mlx *mlx)
-{
-	if (keycode != 0)
-		set_key_state(keycode, mlx, 1);
-	apply_key_movement(mlx);
-	return (0);
-}
-
-int	handle_player_release(int keycode, t_mlx *mlx)
-{
-	set_key_state(keycode, mlx, 0);
-	return (0);
 }

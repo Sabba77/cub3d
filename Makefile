@@ -2,6 +2,7 @@ NAME = cub3D
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+PROJECT_CFLAGS = $(CFLAGS)
 INCLUDES = -I./include -I./libft -I./minilibx-linux
 RM = rm -f
 
@@ -25,9 +26,13 @@ SRCS = src/main.c \
 	src/graphics/visual.c \
 	src/graphics/image.c \
 	src/graphics/hooks.c \
+	src/graphics/focus.c \
+	src/graphics/time.c \
 	src/graphics/player.c \
 	src/graphics/textures.c \
 	src/graphics/movement.c \
+	src/graphics/movement_input.c \
+	src/graphics/raycast_draw.c \
 	src/graphics/raycast.c
 
 OBJS = $(SRCS:.c=.o)
@@ -35,7 +40,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(PROJECT_CFLAGS) $(OBJS) $(LIBFT) $(MLX_LIB) $(MLX_FLAGS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
@@ -44,7 +49,7 @@ $(MLX_LIB):
 	$(MAKE) -C $(MLX_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(PROJECT_CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
@@ -59,4 +64,8 @@ re: fclean all
 
 bonus: all
 
-.PHONY: all clean fclean re bonus
+debug:
+	$(MAKE) fclean
+	$(MAKE) PROJECT_CFLAGS="-Wall -Wextra -Werror -g -O0"
+
+.PHONY: all clean fclean re bonus debug

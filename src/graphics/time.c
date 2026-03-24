@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/21 12:24:20 by sabba            ###   ########.fr       */
+/*   Created: 2026/03/21 13:20:00 by sabba             #+#    #+#             */
+/*   Updated: 2026/03/21 13:04:52 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <sys/time.h>
 
-int	main(int argc, char **argv)
+long	get_time_ms(void)
 {
-	t_cub	cub;
-	int		parse_status;
-	int		visual_status;
+	struct timeval	tv;
 
-	if (argc != 2)
-		return (print_error("Usage: ./cub3D <map.cub>"));
-	init_cub(&cub);
-	parse_status = parse_cub_file(argv[1], &cub);
-	if (parse_status != 0)
-	{
-		free_cub(&cub);
-		return (1);
-	}
-	visual_status = start_visual_test(&cub);
-	free_cub(&cub);
-	if (visual_status != 0)
-		return (1);
-	return (0);
+	if (gettimeofday(&tv, NULL) != 0)
+		return (0);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000L));
+}
+
+int	should_render_frame(void)
+{
+	static long	last_frame_time;
+	long		now;
+
+	now = get_time_ms();
+	if (now == 0)
+		return (0);
+	if (last_frame_time != 0 && (now - last_frame_time) < 16)
+		return (0);
+	last_frame_time = now;
+	return (1);
 }
