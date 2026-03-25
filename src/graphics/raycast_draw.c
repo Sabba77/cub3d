@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 12:35:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/21 12:49:43 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/25 09:38:31 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ static void	draw_wall_column(t_mlx *mlx, t_ray *ray, int x)
 	y = ray->draw_start;
 	while (y <= ray->draw_end)
 	{
-		tex_y = (int)((y - ray->draw_start) * (double)tex->height
-				/ (ray->draw_end - ray->draw_start + 1));
+		tex_y = (int)((y - mlx->win_height / 2.0
+					+ (int)(mlx->win_height / ray->wall_dist) / 2.0)
+				* (double)tex->height / (int)(mlx->win_height / ray->wall_dist));
 		put_pixel(&mlx->frame, x, y, get_texel_color(tex, tex_x, tex_y));
 		y++;
 	}
@@ -75,9 +76,9 @@ void	draw_ray(t_mlx *mlx, t_ray *ray, int x)
 	int	line_height;
 
 	if (ray->side == 0)
-		ray->wall_dist = ray->side_x - ray->delta_x;
+		ray->wall_dist = (ray->map_x - mlx->player.x + (1 - ray->step_x) / 2) / ray->dir_x;
 	else
-		ray->wall_dist = ray->side_y - ray->delta_y;
+		ray->wall_dist = (ray->map_y - mlx->player.y + (1 - ray->step_y) / 2) / ray->dir_y;
 	if (ray->wall_dist <= 0.0)
 		ray->wall_dist = 0.1;
 	line_height = (int)(mlx->win_height / ray->wall_dist);
