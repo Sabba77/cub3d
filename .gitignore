@@ -1,3 +1,7 @@
 *.o
 cub3d
+cub3D
 .vscode/
+*.a
+*.out
+*.txt
