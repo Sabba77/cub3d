@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/21 13:25:02 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/26 11:35:50 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define KEY_D 100
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
-# define MOVE_SPEED 0.10
-# define ROT_SPEED 0.06
+# define MOVE_SPEED 0.06
+# define ROT_SPEED 0.05
 
 typedef struct s_img
 {

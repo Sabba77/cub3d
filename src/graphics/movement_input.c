@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/21 12:35:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/21 12:49:43 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/26 11:21:31 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	handle_player_input(int keycode, t_mlx *mlx)
 {
 	if (keycode != 0)
 		set_key_state(keycode, mlx, 1);
-	update_player_movement(mlx);
 	return (0);
 }
 

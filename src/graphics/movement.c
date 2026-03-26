@@ -6,7 +6,7 @@
 /*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:10:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/21 13:37:43 by sabba            ###   ########.fr       */
+/*   Updated: 2026/03/26 11:34:40 by sabba            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,20 @@ static void	rotate_player(t_mlx *mlx, double angle)
 
 void	update_player_movement(t_mlx *mlx)
 {
-	if (mlx->key_w)
-		move_forward(mlx, MOVE_SPEED);
-	if (mlx->key_s)
-		move_forward(mlx, -MOVE_SPEED);
-	if (mlx->key_a)
-		move_side(mlx, -MOVE_SPEED);
-	if (mlx->key_d)
-		move_side(mlx, MOVE_SPEED);
+	double	m_step;
+	double	s_step;
+	double	len;
+
+	m_step = mlx->key_w - mlx->key_s;
+	s_step = mlx->key_d - mlx->key_a;
+	if (m_step != 0 || s_step != 0)
+	{
+		len = sqrt(m_step * m_step + s_step * s_step);
+		if (m_step != 0)
+			move_forward(mlx, (m_step / len) * MOVE_SPEED);
+		if (s_step != 0)
+			move_side(mlx, (s_step / len) * (MOVE_SPEED * 0.75));
+	}
 	if (mlx->key_left)
 		rotate_player(mlx, -ROT_SPEED);
 	if (mlx->key_right)
