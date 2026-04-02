@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tisabbat <tisabbat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 16:40:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/21 12:49:43 by sabba            ###   ########.fr       */
+/*   Updated: 2026/04/02 11:33:28 by tisabbat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "mlx.h"
+
+#define TARGET_RAY_COLUMNS 1024
 
 static void	init_ray_delta(t_ray *ray)
 {
@@ -89,19 +91,26 @@ int	render_scene(t_mlx *mlx)
 {
 	t_ray	ray;
 	int		x;
+	int		ray_step;
+	int		ray_x;
 
 	if (render_static_frame(mlx->cub, mlx))
 		return (1);
+	ray_step = 1;
+	if (mlx->win_width > TARGET_RAY_COLUMNS)
+		ray_step = mlx->win_width / TARGET_RAY_COLUMNS;
 	x = 0;
 	while (x < mlx->win_width)
 	{
-		init_ray(mlx, &ray, x);
+		ray_x = x + (ray_step / 2);
+		if (ray_x >= mlx->win_width)
+			ray_x = mlx->win_width - 1;
+		init_ray(mlx, &ray, ray_x);
 		run_dda(mlx, &ray);
-		draw_ray(mlx, &ray, x);
-		x++;
+		draw_ray(mlx, &ray, x, ray_step);
+		x += ray_step;
 	}
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr,
 		mlx->frame.img_ptr, 0, 0);
-	mlx_do_sync(mlx->mlx_ptr);
 	return (0);
 }

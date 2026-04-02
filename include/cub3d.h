@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tisabbat <tisabbat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 10:00:00 by tisabbat          #+#    #+#             */
-/*   Updated: 2026/03/26 11:35:50 by sabba            ###   ########.fr       */
+/*   Updated: 2026/04/02 11:35:40 by tisabbat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int		handle_focus_out(t_mlx *mlx);
 int		handle_player_input(int keycode, t_mlx *mlx);
 int		handle_player_release(int keycode, t_mlx *mlx);
 void	update_player_movement(t_mlx *mlx);
-void	draw_ray(t_mlx *mlx, t_ray *ray, int x);
+void	draw_ray(t_mlx *mlx, t_ray *ray, int x, int ray_width);
 long	get_time_ms(void);
 int		should_render_frame(void);
 int		expose_frame(t_mlx *mlx);

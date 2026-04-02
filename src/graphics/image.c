@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabba <sabba@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tisabbat <tisabbat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 16:00:00 by sabba             #+#    #+#             */
-/*   Updated: 2026/03/20 13:19:31 by sabba            ###   ########.fr       */
+/*   Updated: 2026/04/02 11:33:28 by tisabbat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,32 @@ void	put_pixel(t_img *img, int x, int y, int color)
 	*(unsigned int *)pixel = color;
 }
 
-int	render_static_frame(t_cub *cub, t_mlx *mlx)
+static void	fill_row(t_img *img, int y, int width, int color)
 {
 	int	x;
-	int	y;
-	int	color;
+
+	x = 0;
+	while (x < width)
+	{
+		((unsigned int *)(img->data + (y * img->line_len)))[x]
+			= (unsigned int)color;
+		x++;
+	}
+}
+
+int	render_static_frame(t_cub *cub, t_mlx *mlx)
+{
+	int			y;
+	int			color;
 
 	y = 0;
 	while (y < mlx->win_height)
 	{
-		x = 0;
 		if (y < mlx->win_height / 2)
 			color = cub->ceiling_color;
 		else
 			color = cub->floor_color;
-		while (x < mlx->win_width)
-		{
-			put_pixel(&mlx->frame, x, y, color);
-			x++;
-		}
+		fill_row(&mlx->frame, y, mlx->win_width, color);
 		y++;
 	}
 	return (0);
